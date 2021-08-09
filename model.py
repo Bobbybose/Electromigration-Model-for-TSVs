@@ -1,6 +1,6 @@
 #EM Model for TSVs in 3d-stacked DRAM architectures
 #Author: Bobby Bose
-#University of Kentucky
+#Worked conducted with the University of Kentucky
 
 import math
 
