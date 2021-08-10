@@ -25,8 +25,7 @@ numTSVs = 32
 timeStep = 5e6
 resGainSlope = 7.78
 resGainInt = -8.73944
-maxParallelism = 16
-
+16
 #Needed values
 vacancyConcentration = atomicConcentration*math.exp(-activationEnergy/(boltzmanConstant*temperature))
 vacancyDiffusivity = initialDiffusivity*math.exp(-activationEnergy/(boltzmanConstant*temperature))
@@ -46,14 +45,26 @@ class TSV:
 #Contains TSV data for different SA-level parallelism values
 parallelismTSVs = []
 
+maxParallelism = int(input("Enter maximum number of allowable parallel subarray activations: "))
+
 #Filling in list for different allowable parallelism levels
 i = maxParallelism
 while i > 1:
    parallelismTSVs.append( TSV(i))
    i = int(i/2)
-#parallelismTSVs.append(TSV(1))
+parallelismTSVs.append(TSV(1))
 
-resLimits = [2.79, 6.76, 14.7, 30.58]
+
+currentParallelism = maxParallelism
+resLimits = []
+while currentParallelism >= 1:
+    #print("Enter the maximum resistance gain for", currentParallelism, "SA activations: ")
+    currentRes = float(input("Enter the maximum resistance gain for {} SA activations: ".format(currentParallelism)))
+    currentParallelism = int(currentParallelism/2)
+    resLimits.append(currentRes)
+
+
+currentParallelism = maxParallelism
 
 timeDrops = []
 
@@ -68,12 +79,11 @@ lastResGain = 0
 
 stop = 0
 level = 0
-currentParallelism = maxParallelism
 
 print(maxParallelism, 'SA-level parallelism:')
 
 #Applying EM Model
-while currentParallelism > 1:
+while currentParallelism >= 1:
     time += timeStep
     rVoid += parallelismTSVs[level].dr
     resGain = resGainSlope*rVoid*1e6+resGainInt
@@ -92,7 +102,7 @@ while currentParallelism > 1:
         print('Lifetime =', "{:2e}".format(time), 'seconds.')
         print('Or', "{:.2f}".format(time/60/60/24/365.25), 'years.')
 
-        if(currentParallelism == 1):
+        if(currentParallelism < 1):
             break
         else:
             print();
