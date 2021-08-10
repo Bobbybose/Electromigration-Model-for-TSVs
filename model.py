@@ -58,7 +58,6 @@ parallelismTSVs.append(TSV(1))
 currentParallelism = maxParallelism
 resLimits = []
 while currentParallelism >= 1:
-    #print("Enter the maximum resistance gain for", currentParallelism, "SA activations: ")
     currentRes = float(input("Enter the maximum resistance gain for {} SA activations: ".format(currentParallelism)))
     currentParallelism = int(currentParallelism/2)
     resLimits.append(currentRes)
@@ -87,9 +86,6 @@ while currentParallelism >= 1:
     time += timeStep
     rVoid += parallelismTSVs[level].dr
     resGain = resGainSlope*rVoid*1e6+resGainInt
-
-    #print(time, rVoid, resGain)
-    #print()
 
     if(resGain > resLimits[level]):
         timeDrops.append(lastTime)
